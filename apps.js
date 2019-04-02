@@ -3,6 +3,8 @@ var request = require('request');
 var cors = require('cors');
 var querystring = require('querystring');
 var cookieParser = require('cookie-parser');
+var axios = require('axios');
+var morgan = require('morgan');
 
 //ids de spotify
 var client_id = '5de5cc1dea9a49248447e9c1fc8c883e'; // Your client id
@@ -15,7 +17,7 @@ app.set('port', process.env.PORT || 3000);
 
 
 //rutas de la SPA 
-
+app.use(morgan('dev'));
 app.use(express.static(__dirname + '/public'))
    .use(cors())
    .use(cookieParser());
@@ -44,6 +46,17 @@ app.get('/token', function(req, resp) {
     }
   });
 });
+//------------------------- search ----------------------------------
+
+app.get('/search',(req,res) => {
+  res.end("se busca en el servicio");
+})
+
+//--------------------- 404 not found -------------------------------
+app.get('*',(req,res) => {
+  res.end("404 not found");
+})
+
 
 app.listen(app.get('port'), function() {
   console.log('La app de node esta corriendo en', app.get('port'));

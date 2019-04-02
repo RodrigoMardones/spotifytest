@@ -10,7 +10,7 @@
 </head>
 <body>
     <div id="app">
-      <input type="text" id="busqueda">
+      <input type="text" v-model="album">
       <button @click="buscar">Buscar</button>
       <p>{{token}}</p>
     </div>
@@ -21,6 +21,7 @@
   el: '#app',
   data:{
     token : '',
+    album : '',
   },
   methods:{
     buscar(){
@@ -33,6 +34,17 @@
           console.log(this.token)
           console.log(JSON.stringify(myJson));
         });
+      fetch('/search',{
+        body:{
+          token:this.token,
+          album:this.album
+        }
+      })
+        .then(function(response){
+          return response.json();
+        }).then(function(myjson){
+          console.log(JSON.stringify(myJson));
+        })
     },
   }
 })  
