@@ -7,6 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" media="screen" href="">
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  
 </head>
 <body>
     <div id="app">
@@ -17,11 +18,13 @@
 </body>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script>
+
   var app = new Vue({
   el: '#app',
   data:{
     token : '',
     album : '',
+    
   },
   methods:{
     buscar(){
@@ -33,18 +36,23 @@
           this.token = myJson.token;
           console.log(this.token)
           console.log(JSON.stringify(myJson));
-        });
-      fetch('/search',{
-        body:{
-          token:this.token,
-          album:this.album
-        }
-      })
-        .then(function(response){
-          return response.json();
-        }).then(function(myjson){
-          console.log(JSON.stringify(myJson));
+          return token
         })
+        .then((token) =>{
+          let data = {'token':token,'album':this.album}
+          fetch('/search',{
+            method:'post',
+            headers: {
+            "Content-Type": "application/json",
+            // "Content-Type": "application/x-www-form-urlencoded",
+            },
+            body:JSON.stringify(data),
+          }).then((response)=>{
+            return response.json()
+          }).then(albumlist =>{
+            console.log(JSON.stringify(albumlist));
+          })
+        });
     },
   }
 })  
