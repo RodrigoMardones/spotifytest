@@ -6,10 +6,10 @@ var cookieParser = require('cookie-parser');
 var request = require('request');
 var axios = require('axios');
 var bodyParser =  require('body-parser');
-
+const MongoClient = require('mongodb').MongoClient;
 //----------------------- mongo db ------------------------------------------
 
-const mongoose = require('mongoose');
+/* const mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var album = new Schema({
   type: String,
@@ -17,7 +17,7 @@ var album = new Schema({
   AlbumDisc :String,
   releaseDate:String,
 })
-var Album = mongoose.model('Album',album);
+var Album = mongoose.model('Album',album); */
 //---------------------------------------------------------------------------
 
 var client_id = '5de5cc1dea9a49248447e9c1fc8c883e'; 
@@ -92,14 +92,17 @@ app.post('/search',(req,res) => {
       parsedalbum(element)
     });
     //conexion a base de datos aqui
-    const uri = "mongodb+srv://RodrigoMardones:<asdfasdf12>@cluster0-y37sm.mongodb.net/test?retryWrites=true";
-    mongoose.connect(uri,{ useNewUrlParser: true }).then(()=>{
-      console.log("conectado a la bd")
-    })
-      .catch((err)=>{
-        console.error(err)
-      })
-    res.json({'data':listitems})
+    const uri = "mongodb://127.0.0.1:27018/albumes";
+    const client = new MongoClient(uri, { useNewUrlParser: true });
+    client.connect((err) => {
+      if(err) throw err;
+      console.log("conected to the db");
+      const collection = client.db("albumes").collection("album");
+      collection.insertMany(parseditems);
+      // perform actions on the collection object
+      client.close();
+    });
+    res.json({'data':parseditems})
   }).catch((err)=>{
     console.log('ERROR: ',err);
   })

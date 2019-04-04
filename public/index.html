@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>Page Title</title>
+  <title>Consumo de API - Spotify</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" type="text/css" media="screen" href="">
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -12,22 +12,32 @@
 </head>
 <body>
     <div id="app">
+      <nav class="navbar navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Prueba de API Spotify</a>
+      </nav>
       <div class="container">
         <div class="row">
           <div class="col-md-4">
-              <input type="text" v-model="album" @keyup.enter="buscar" class="form-control">
-              <br>
-              <button @click="buscar" class="btn btn-success">Buscar</button>
+            <div class="card mt-2">
+              <div class="card-body">
+                <div class="formgroup">
+                  <label for="">Album a buscar</label>
+                    <input type="text" v-model="album" @keyup.enter="buscar" class="form-control">
+                    <br>
+                    <button @click="buscar" class="btn btn-success">Buscar</button>
+                </div>
+                  
+              </div>
+            </div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-6">
               <div v-for="album of searchfinished">
-                <div class="card mb-2">
+                <div class="card mb-2 mt-2">
+                  <img v-bind:src="album.AlbumImage.url" alt="" class="card-img-top">
                   <div class="card-body">
                     <h5 class="card-title">
                         {{album.artistName}} - {{album.AlbumDisc}} -{{album.releaseDate}}
                       </div>
-                      <button class="btn btn-primary">guardar Disco</button>
-                      
                   </div> 
                 </div>
                 <br>
