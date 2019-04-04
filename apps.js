@@ -9,17 +9,6 @@ var bodyParser =  require('body-parser');
 const MongoClient = require('mongodb').MongoClient;
 //----------------------- mongo db ------------------------------------------
 
-/* const mongoose = require('mongoose');
-var Schema = mongoose.Schema;
-var album = new Schema({
-  type: String,
-  artistName:String,
-  AlbumDisc :String,
-  releaseDate:String,
-})
-var Album = mongoose.model('Album',album); */
-//---------------------------------------------------------------------------
-
 var client_id = '5de5cc1dea9a49248447e9c1fc8c883e'; 
 var client_secret = 'f96497e6b670460a8b68279f9d9a1375'; 
 
@@ -28,8 +17,8 @@ app.set('port', process.env.PORT || 8081);
 
 // -------------------- rutas de la SPA --------------------------------------
 app.use(morgan('dev'));
-app.use( bodyParser.json());       // to support JSON-encoded bodies
-app.use(bodyParser.urlencoded({     // to support URL-encoded bodies
+app.use( bodyParser.json());       
+app.use(bodyParser.urlencoded({     
   extended: true
 })); 
 
@@ -57,7 +46,7 @@ app.get('/token', function(req, resp) {
     },
     json: true
   };
-
+  //prueba con request
   request.post(authOptions, function(error, response, body) {
     if (!error && response.statusCode === 200) {
       resp.json({ token: body.access_token });
@@ -73,6 +62,7 @@ app.post('/search',(req,res) => {
     baseURL:`https://api.spotify.com/v1/search?q=${album}&type=album`,
     headers:{'Authorization':`Bearer ${token}`}
   })
+  //prueba con axios
   instance.get(
   )
   .then((resp)=>{
