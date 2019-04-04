@@ -6,16 +6,13 @@ var cookieParser = require('cookie-parser');
 var request = require('request');
 var axios = require('axios');
 var bodyParser =  require('body-parser');
-const MongoClient = require('mongodb').MongoClient;
+const {client_id,client_secret,uri,dbname,collec} = require('./config');
 //----------------------- mongo db ------------------------------------------
+const MongoClient = require('mongodb').MongoClient;
 
-var client_id = '5de5cc1dea9a49248447e9c1fc8c883e'; 
-var client_secret = 'f96497e6b670460a8b68279f9d9a1375'; 
-
+// -------------------- Express config --------------------------------------
 var app = express();
 app.set('port', process.env.PORT || 8081);
-
-// -------------------- rutas de la SPA --------------------------------------
 app.use(morgan('dev'));
 app.use( bodyParser.json());       
 app.use(bodyParser.urlencoded({     
@@ -25,8 +22,6 @@ app.use(bodyParser.urlencoded({
 app.use(express.static(__dirname + '/public'))
    .use(cors())
    .use(cookieParser());
-
-
 
 //------------------ token -------------------------------------------------
 app.get('/token', function(req, resp) {
@@ -87,7 +82,7 @@ app.post('/search',(req,res) => {
     client.connect((err) => {
       if(err) throw err;
       console.log("conected to the db");
-      const collection = client.db("albumes").collection("album");
+      const collection = client.db(dbname).collection(collec);
       collection.insertMany(parseditems);
       // perform actions on the collection object
       client.close();
